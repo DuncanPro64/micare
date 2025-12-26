@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MI_CARE eHealth Platform</title>
+    <link rel="stylesheet" href="css/micare.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="screen active">
+        <div class="splash-container">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <h1>MI_CARE</h1>
+            </div>
+            <p class="slogan">Blockchain-Powered Healthcare Ecosystem</p>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen">
+        <div class="container">
+            <div class="header">
+                <h1>Welcome Back</h1>
+                <p>Login to your MI_CARE account</p>
+            </div>
+            
+            <form id="login-form" class="form">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="Blockchain Address or Email" required>
+                </div>
+                
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="pin" placeholder="6-digit PIN" maxlength="6" required>
+                </div>
+                
+                <div class="two-step-verification">
+                    <h3>Two-Step Verification</h3>
+                    <div class="verification-options">
+                        <div class="option" id="biometric-option">
+                            <i class="fas fa-fingerprint"></i>
+                            <span>Biometric</span>
+                        </div>
+                        <div class="option" id="qr-option">
+                            <i class="fas fa-qrcode"></i>
+                            <span>QR Code</span>
+                        </div>
+                    </div>
+                    
+                    <div id="qr-scanner" class="hidden">
+                        <div class="qr-scanner-container">
+                            <div class="qr-placeholder">
+                                <i class="fas fa-qrcode"></i>
+                                <p>Scan QR code sent to your email</p>
+                            </div>
+                            <button type="button" id="cancel-qr" class="btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary">Login</button>
+            </form>
+            
+            <div class="footer-links">
+                <a href="#" id="signup-link">Create Account</a>
+                <a href="#">Forgot PIN?</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign Up Screen -->
+    <div id="signup-screen" class="screen">
+        <div class="container">
+            <div class="header">
+                <h1>Join MI_CARE</h1>
+                <p>Select your role in the blockchain ecosystem</p>
+            </div>
+            
+            <div class="role-selection">
+                <div class="role-card" data-role="health-expert">
+                    <i class="fas fa-user-md"></i>
+                    <h3>Health Expert</h3>
+                    <p>Medical professionals, researchers, and specialists</p>
+                </div>
+                
+                <div class="role-card" data-role="normal-user">
+                    <i class="fas fa-user"></i>
+                    <h3>Normal User</h3>
+                    <p>Patients and healthcare consumers</p>
+                </div>
+                
+                <div class="role-card" data-role="organization">
+                    <i class="fas fa-building"></i>
+                    <h3>Organization</h3>
+                    <p>Hospitals, clinics, and healthcare providers</p>
+                </div>
+            </div>
+            
+            <button id="back-to-login" class="btn-secondary">Back to Login</button>
+        </div>
+    </div>
+
+    <!-- Personal Data Screen -->
+    <div id="personal-data-screen" class="screen">
+        <div class="container">
+            <div class="form-header">
+                <h2>Personal Information</h2>
+                <p>Please provide your details for verification</p>
+            </div>
+            
+            <form id="personal-data-form" class="multi-step-form">
+                <div class="form-step active" data-step="1">
+                    <h3>Basic Information</h3>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="surname">Surname</label>
+                            <input type="text" id="surname" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="dob">Date of Birth</label>
+                            <input type="date" id="dob" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="nationalId">National ID</label>
+                            <input type="text" id="nationalId" required>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-primary next-step" data-next="2">Continue</button>
+                </div>
+                
+                <div class="form-step" data-step="2">
+                    <h3>Professional Details</h3>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="profession">Profession/Occupation</label>
+                            <input type="text" id="profession">
+                        </div>
+                        <div class="input-group">
+                            <label for="race">Race</label>
+                            <select id="race">
+                                <option value="">Select</option>
+                                <option value="african">African</option>
+                                <option value="asian">Asian</option>
+                                <option value="caucasian">Caucasian</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender">
+                                <option value="">Select</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="genetic">Genetic Conditions</label>
+                            <textarea id="genetic" placeholder="If any"></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label for="kra">KRA PIN</label>
+                            <input type="text" id="kra">
+                        </div>
+                        <div class="input-group">
+                            <label for="physical">Physical Challenges</label>
+                            <textarea id="physical" placeholder="If any"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-navigation">
+                        <button type="button" class="btn-secondary prev-step" data-prev="1">Back</button>
+                        <button type="button" class="btn-primary next-step" data-next="3">Continue</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Certification Screen -->
+    <div id="certification-screen" class="screen">
+        <div class="container">
+            <div class="header">
+                <h1>Identity Verification</h1>
+                <p>Upload documents for certification</p>
+            </div>
+            
+            <div class="certification-steps">
+                <div class="cert-step active">
+                    <div class="step-number">1</div>
+                    <h3>Identity Document</h3>
+                    <div class="upload-area" id="id-upload">
+                        <i class="fas fa-id-card"></i>
+                        <p>Upload National ID/Passport/Birth Certificate</p>
+                        <input type="file" accept=".jpg,.jpeg,.png,.pdf" hidden>
+                        <button class="btn-secondary">Choose File</button>
+                    </div>
+                </div>
+                
+                <div class="cert-step">
+                    <div class="step-number">2</div>
+                    <h3>Professional Proof</h3>
+                    <div class="upload-area" id="professional-upload">
+                        <i class="fas fa-certificate"></i>
+                        <p>Upload Academic Certificates/Recommendation Letters</p>
+                        <input type="file" accept=".jpg,.jpeg,.png,.pdf" hidden>
+                        <button class="btn-secondary">Choose File</button>
+                    </div>
+                </div>
+                
+                <div class="cert-step">
+                    <div class="step-number">3</div>
+                    <h3>Biometrics</h3>
+                    <div class="biometrics-section">
+                        <div class="biometric-option">
+                            <i class="fas fa-camera"></i>
+                            <p>Facial Photo</p>
+                            <button class="btn-secondary">Capture</button>
+                        </div>
+                        <div class="biometric-option">
+                            <i class="fas fa-fingerprint"></i>
+                            <p>Fingerprint</p>
+                            <button class="btn-secondary">Scan</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cert-step">
+                    <div class="step-number">4</div>
+                    <h3>Organization Documents</h3>
+                    <div class="upload-area" id="org-upload">
+                        <i class="fas fa-building"></i>
+                        <p>Upload Compliance Certificates & Licenses</p>
+                        <input type="file" accept=".jpg,.jpeg,.png,.pdf" hidden>
+                        <button class="btn-secondary">Choose File</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-navigation">
+                <button id="back-to-personal" class="btn-secondary">Back</button>
+                <button id="continue-to-services" class="btn-primary">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Selection Screen -->
+    <div id="services-screen" class="screen">
+        <div class="container">
+            <div class="header">
+                <h1>Select Services</h1>
+                <p>Choose services to access on MI_CARE blockchain</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card" data-service="gym">
+                    <i class="fas fa-dumbbell"></i>
+                    <h3>Gym Services</h3>
+                </div>
+                <div class="service-card" data-service="expertise">
+                    <i class="fas fa-user-md"></i>
+                    <h3>Expertise</h3>
+                </div>
+                <div class="service-card" data-service="restaurants">
+                    <i class="fas fa-utensils"></i>
+                    <h3>Restaurants/Clubs</h3>
+                </div>
+                <div class="service-card" data-service="pharma">
+                    <i class="fas fa-pills"></i>
+                    <h3>Pharmaceutics</h3>
+                </div>
+                <div class="service-card" data-service="money">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <h3>Money</h3>
+                </div>
+                <div class="service-card" data-service="hospitals">
+                    <i class="fas fa-hospital"></i>
+                    <h3>Medical Care</h3>
+                </div>
+                <div class="service-card" data-service="insurance">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Insurance</h3>
+                </div>
+                <div class="service-card" data-service="lab">
+                    <i class="fas fa-flask"></i>
+                    <h3>Medical Laboratory</h3>
+                </div>
+                <div class="service-card" data-service="wearable">
+                    <i class="fas fa-watch"></i>
+                    <h3>Wearable Device</h3>
+                </div>
+            </div>
+            
+            <div class="form-navigation">
+                <button id="back-to-certification" class="btn-secondary">Back</button>
+                <button id="continue-to-submission" class="btn-primary">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submission & Validation Screen -->
+    <div id="submission-screen" class="screen">
+        <div class="container">
+            <div class="header">
+                <h1>Policy & Submission</h1>
+            </div>
+            
+            <div class="policy-document">
+                <h3>MI_CARE Terms & Conditions</h3>
+                <div class="policy-content">
+                    <p>By submitting your data, you agree to:</p>
+                    <ul>
+                        <li>Share health data on blockchain for research</li>
+                        <li>Allow anonymized data usage</li>
+                        <li>Comply with healthcare regulations</li>
+                        <li>Maintain data accuracy</li>
+                        <li>Accept smart contract terms</li>
+                    </ul>
+                    
+                    <p><strong>Data Usage:</strong> Your data will be encrypted and stored on the MI_CARE blockchain. Only authorized parties can access specific data with your permission.</p>
+                    
+                    <div class="data-summary">
+                        <h4>Data Summary</h4>
+                        <p>Personal Info: <span id="data-count">8 fields</span></p>
+                        <p>Documents: <span id="doc-count">3 files</span></p>
+                        <p>Services Selected: <span id="service-count">5 services</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="acceptance-section">
+                <label class="checkbox">
+                    <input type="checkbox" id="accept-terms">
+                    <span>I have read and accept the terms and conditions</span>
+                </label>
+                
+                <div class="digital-signature">
+                    <h4>Digital Signature</h4>
+                    <div class="signature-pad">
+                        <canvas id="signature-canvas"></canvas>
+                        <button id="clear-signature" class="btn-secondary">Clear</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-navigation">
+                <button id="back-to-services" class="btn-secondary">Back</button>
+                <button id="submit-application" class="btn-primary" disabled>Submit for Validation</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Validation Status Screen -->
+    <div id="validation-screen" class="screen">
+        <div class="container">
+            <div class="validation-content">
+                <div class="status-icon success hidden">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="status-icon pending">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+                <div class="status-icon error hidden">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                
+                <h2 id="status-title">Validating Your Data</h2>
+                <p id="status-message">Please wait while we verify your information...</p>
+                
+                <div class="validation-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <span class="step active">Data Check</span>
+                        <span class="step">Document Verification</span>
+                        <span class="step">Blockchain Registration</span>
+                        <span class="step">Complete</span>
+                    </div>
+                </div>
+                
+                <div class="validation-result hidden">
+                    <div class="result-details">
+                        <h4>Validation Details</h4>
+                        <p>Your data has been successfully validated!</p>
+                        <p class="email-notice">Check your email to complete verification</p>
+                    </div>
+                    <button id="go-to-login" class="btn-primary">Proceed to Login</button>
+                </div>
+                
+                <div class="retry-section hidden">
+                    <p>Validation failed. Please check your data and try again.</p>
+                    <button id="retry-validation" class="btn-primary">Retry</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Screen -->
+    <div id="dashboard-screen" class="screen hidden">
+        <div class="app-container">
+            <!-- Top Navigation -->
+            <nav class="top-nav">
+                <button class="menu-toggle" id="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <div class="nav-center">
+                    <div class="nav-item active" data-view="account">
+                        <i class="fas fa-user"></i>
+                        <span>Account</span>
+                    </div>
+                    <div class="nav-item" data-view="map">
+                        <i class="fas fa-map"></i>
+                        <span>Geo Visualizer</span>
+                    </div>
+                    <div class="nav-item" data-view="wallet">
+                        <i class="fas fa-wallet"></i>
+                        <span>Wallet</span>
+                    </div>
+                    <div class="nav-item" data-view="engagement">
+                        <i class="fas fa-comments"></i>
+                        <span>Engagement</span>
+                    </div>
+                </div>
+                
+                <div class="nav-right">
+                    <button class="icon-btn" id="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="icon-btn" id="notifications-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </button>
+                    <button class="icon-btn" id="more-btn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            </nav>
+            
+            <!-- Side Menu -->
+            <div class="side-menu" id="side-menu">
+                <div class="menu-header">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-info">
+                        <h3 id="user-name">John Doe</h3>
+                        <p class="user-role">Normal User</p>
+                        <p class="blockchain-address" id="blockchain-address">0x742d...a9c3</p>
+                    </div>
+                </div>
+                
+                <div class="menu-items">
+                    <a href="#" class="menu-item" data-section="devices">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Devices</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="orgs">
+                        <i class="fas fa-building"></i>
+                        <span>Organizations</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="peers">
+                        <i class="fas fa-users"></i>
+                        <span>Dedicated Peers</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="reports">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Reports</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" class="menu-item" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+                
+                <div class="menu-footer">
+                    <div class="validation-badge">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Verified User</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content Area -->
+            <main class="main-content" id="main-content">
+                <!-- Account View -->
+                <div class="content-view active" id="account-view">
+                    <div class="account-header">
+                        <div class="validation-mark">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <p class="blockchain-address">Blockchain Address: 0x742d35Cc6634C0532925a3b844Bc454e4438fdfe</p>
+                    </div>
+                    
+                    <div class="status-counter">
+                        <h3>Blockchain Status</h3>
+                        <div class="counter-grid">
+                            <div class="counter-item">
+                                <span class="counter-value" id="health-records">127</span>
+                                <span class="counter-label">Health Records</span>
+                            </div>
+                            <div class="counter-item">
+                                <span class="counter-value" id="transactions">42</span>
+                                <span class="counter-label">Transactions</span>
+                            </div>
+                            <div class="counter-item">
+                                <span class="counter-value" id="reputation-score">98%</span>
+                                <span class="counter-label">Reputation Score</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recent-updates">
+                        <h3>Recent Updates</h3>
+                        <div class="updates-list">
+                            <div class="update-item">
+                                <i class="fas fa-heartbeat update-icon medical"></i>
+                                <div class="update-content">
+                                    <p>Blood pressure recorded: 120/80 mmHg</p>
+                                    <span class="update-time">2 hours ago</span>
+                                </div>
+                            </div>
+                            <div class="update-item">
+                                <i class="fas fa-calendar-check update-icon appointment"></i>
+                                <div class="update-content">
+                                    <p>Appointment scheduled with Dr. Smith</p>
+                                    <span class="update-time">Yesterday</span>
+                                </div>
+                            </div>
+                            <div class="update-item">
+                                <i class="fas fa-pills update-icon medication"></i>
+                                <div class="update-content">
+                                    <p>Medication reminder: Take Metformin</p>
+                                    <span class="update-time">4 hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quick-sections">
+                        <div class="section-card" id="health-entries">
+                            <i class="fas fa-clipboard-list"></i>
+                            <h4>Health Entries</h4>
+                            <p>Record and view health data</p>
+                        </div>
+                        <div class="section-card" id="appointments">
+                            <i class="fas fa-calendar-alt"></i>
+                            <h4>Appointments</h4>
+                            <p>Schedule and manage visits</p>
+                        </div>
+                        <div class="section-card" id="medication">
+                            <i class="fas fa-pills"></i>
+                            <h4>Current Medication</h4>
+                            <p>Track prescriptions</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Map View -->
+                <div class="content-view" id="map-view">
+                    <div class="map-header">
+                        <h2>Geo Visualizer</h2>
+                        <div class="map-controls">
+                            <button class="btn-secondary" id="analytics-toggle">
+                                <i class="fas fa-chart-bar"></i>
+                                Analytics
+                            </button>
+                            <select id="map-type">
+                                <option value="standard">Standard</option>
+                                <option value="satellite">Satellite</option>
+                                <option value="terrain">Terrain</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="map-container">
+                        <div id="map"></div>
+                        <div class="map-overlay">
+                            <div class="map-legend">
+                                <h4>Legend</h4>
+                                <div class="legend-item">
+                                    <span class="legend-color hotspot"></span>
+                                    <span>Disease Hotspot</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color emergency"></span>
+                                    <span>Emergency</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color facility"></span>
+                                    <span>Blockchain Facility</span>
+                                </div>
+                            </div>
+                            <div class="map-tools">
+                                <button class="tool-btn" id="zoom-in">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button class="tool-btn" id="zoom-out">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button class="tool-btn" id="location-btn">
+                                    <i class="fas fa-location-arrow"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-panel" id="analytics-panel">
+                        <div class="analytics-header">
+                            <h3>Analytics</h3>
+                            <button class="close-btn" id="close-analytics">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="analytics-content">
+                            <div class="filter-section">
+                                <select id="date-filter">
+                                    <option value="7d">Last 7 Days</option>
+                                    <option value="30d">Last 30 Days</option>
+                                    <option value="90d">Last 90 Days</option>
+                                </select>
+                                <select id="disease-filter">
+                                    <option value="all">All Diseases</option>
+                                    <option value="covid">COVID-19</option>
+                                    <option value="flu">Influenza</option>
+                                    <option value="malaria">Malaria</option>
+                                </select>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="disease-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="map-bottom-bar">
+                        <button class="icon-btn" id="clear-map">
+                            <i class="fas fa-trash"></i>
+                            <span>Clear</span>
+                        </button>
+                        <button class="icon-btn" id="download-map">
+                            <i class="fas fa-download"></i>
+                            <span>Download</span>
+                        </button>
+                        <button class="icon-btn" id="share-map">
+                            <i class="fas fa-share"></i>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Wallet View -->
+                <div class="content-view" id="wallet-view">
+                    <div class="wallet-header">
+                        <div class="validation-mark small">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="wallet-controls">
+                            <button class="icon-btn" id="wallet-analytics">
+                                <i class="fas fa-chart-line"></i>
+                            </button>
+                            <button class="icon-btn" id="scan-qr">
+                                <i class="fas fa-qrcode"></i>
+                            </button>
+                            <button class="icon-btn" id="wallet-notifications">
+                                <i class="fas fa-bell"></i>
+                            </button>
+                            <button class="icon-btn" id="wallet-menu">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="balance-section">
+                        <h3>Account Balance</h3>
+                        <div class="balance-amount">
+                            <span class="currency">HTB</span>
+                            <span class="amount" id="balance-amount">1,245.75</span>
+                        </div>
+                        <p class="balance-update">Last updated: <span id="last-update">Today, 14:30</span></p>
+                        <p class="blockchain-address">Address: 0x742d35Cc6634C0532925a3b844Bc454e4438fdfe</p>
+                        
+                        <div class="wallet-actions">
+                            <button class="btn-primary" id="deposit-btn">
+                                <i class="fas fa-arrow-down"></i>
+                                Deposit
+                            </button>
+                            <button class="btn-primary" id="send-btn">
+                                <i class="fas fa-arrow-up"></i>
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="transaction-history">
+                        <h3>Transaction History</h3>
+                        <div class="transactions-list">
+                            <div class="transaction-item">
+                                <div class="transaction-icon received">
+                                    <i class="fas fa-arrow-down"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <p class="transaction-title">Health Data Reward</p>
+                                    <p class="transaction-time">Today, 10:15</p>
+                                </div>
+                                <div class="transaction-amount positive">
+                                    +50.00 HTB
+                                </div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="transaction-icon sent">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <p class="transaction-title">Pharmacy Payment</p>
+                                    <p class="transaction-time">Yesterday, 16:30</p>
+                                </div>
+                                <div class="transaction-amount negative">
+                                    -25.50 HTB
+                                </div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="transaction-icon">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <p class="transaction-title">Currency Exchange</p>
+                                    <p class="transaction-time">Mar 12, 2024</p>
+                                </div>
+                                <div class="transaction-amount">
+                                    100.00 HTB
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="wallet-bottom-bar">
+                        <button class="icon-btn" id="withdraw-btn">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Withdraw</span>
+                        </button>
+                        <button class="icon-btn" id="pay-btn">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Pay</span>
+                        </button>
+                        <button class="icon-btn" id="exchange-btn">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Exchange</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Engagement View -->
+                <div class="content-view" id="engagement-view">
+                    <div class="engagement-header">
+                        <div class="engagement-tabs">
+                            <button class="tab-btn active" data-tab="updates">
+                                <i class="fas fa-bell"></i>
+                                Updates
+                            </button>
+                            <button class="tab-btn" data-tab="chats">
+                                <i class="fas fa-comments"></i>
+                                Chats
+                            </button>
+                            <button class="tab-btn" data-tab="calls">
+                                <i class="fas fa-phone"></i>
+                                Calls
+                            </button>
+                            <button class="tab-btn" data-tab="ai-bot">
+                                <i class="fas fa-robot"></i>
+                                AI Bot
+                            </button>
+                        </div>
+                        <div class="engagement-address">
+                            <p>Reachable at: user123.micare</p>
+                        </div>
+                    </div>
+                    
+                    <div class="engagement-content">
+                        <div class="tab-content active" id="updates-tab">
+                            <div class="updates-feed">
+                                <div class="update-card">
+                                    <div class="update-header">
+                                        <i class="fas fa-heartbeat"></i>
+                                        <div>
+                                            <h4>Health Alert</h4>
+                                            <span class="update-time">2 hours ago</span>
+                                        </div>
+                                    </div>
+                                    <p>Your recent blood pressure reading shows improvement. Keep up the good work!</p>
+                                </div>
+                                <div class="update-card">
+                                    <div class="update-header">
+                                        <i class="fas fa-pills"></i>
+                                        <div>
+                                            <h4>Medication Reminder</h4>
+                                            <span class="update-time">4 hours ago</span>
+                                        </div>
+                                    </div>
+                                    <p>Time to take your scheduled medication: Metformin 500mg</p>
+                                </div>
+                                <div class="update-card">
+                                    <div class="update-header">
+                                        <i class="fas fa-calendar-check"></i>
+                                        <div>
+                                            <h4>Appointment Confirmed</h4>
+                                            <span class="update-time">Yesterday</span>
+                                        </div>
+                                    </div>
+                                    <p>Your appointment with Dr. Smith is confirmed for Friday, 10:00 AM</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content" id="chats-tab">
+                            <div class="chats-list">
+                                <div class="chat-item" data-chat="dr-smith">
+                                    <div class="chat-avatar">
+                                        <i class="fas fa-user-md"></i>
+                                    </div>
+                                    <div class="chat-info">
+                                        <h4>Dr. Smith</h4>
+                                        <p>Hello, how are you feeling today?</p>
+                                    </div>
+                                    <span class="chat-time">10:30</span>
+                                </div>
+                                <div class="chat-item" data-chat="pharmacy">
+                                    <div class="chat-avatar">
+                                        <i class="fas fa-pills"></i>
+                                    </div>
+                                    <div class="chat-info">
+                                        <h4>Pharmacy #123</h4>
+                                        <p>Your prescription is ready for pickup</p>
+                                    </div>
+                                    <span class="chat-time">Yesterday</span>
+                                </div>
+                                <div class="chat-item" data-chat="ai-assistant">
+                                    <div class="chat-avatar">
+                                        <i class="fas fa-robot"></i>
+                                    </div>
+                                    <div class="chat-info">
+                                        <h4>MI_CARE AI</h4>
+                                        <p>I can help answer your health questions</p>
+                                    </div>
+                                    <span class="chat-time">Mar 10</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content" id="calls-tab">
+                            <div class="calls-list">
+                                <div class="call-item">
+                                    <div class="call-icon incoming">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                    <div class="call-info">
+                                        <h4>Dr. Johnson</h4>
+                                        <p>Incoming call</p>
+                                    </div>
+                                    <span class="call-time">Today, 09:15</span>
+                                </div>
+                                <div class="call-item">
+                                    <div class="call-icon outgoing">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                    <div class="call-info">
+                                        <h4>Emergency Services</h4>
+                                        <p>Outgoing call - 2 min</p>
+                                    </div>
+                                    <span class="call-time">Mar 12, 18:30</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content" id="ai-bot-tab">
+                            <div class="ai-bot-container">
+                                <div class="ai-header">
+                                    <i class="fas fa-robot"></i>
+                                    <h3>MI_CARE AI Assistant</h3>
+                                </div>
+                                <div class="ai-conversation">
+                                    <div class="ai-message">
+                                        <p>Hello! I'm your MI_CARE AI assistant. How can I help you today?</p>
+                                    </div>
+                                </div>
+                                <div class="ai-input">
+                                    <input type="text" placeholder="Type your health question...">
+                                    <button class="btn-primary">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            
+            <!-- Bottom Navigation -->
+            <div class="bottom-nav">
+                <button class="nav-btn" id="call-btn">
+                    <i class="fas fa-phone"></i>
+                    <span>Calls</span>
+                </button>
+                <button class="nav-btn" id="updates-btn">
+                    <i class="fas fa-bell"></i>
+                    <span>Updates</span>
+                </button>
+                <button class="nav-btn" id="wallet-bottom-btn">
+                    <i class="fas fa-wallet"></i>
+                    <span>Wallet</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Window -->
+    <div id="chat-window" class="screen hidden">
+        <div class="chat-container">
+            <div class="chat-header">
+                <button class="back-btn" id="back-to-engagement">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="chat-user-info">
+                    <div class="chat-avatar">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div>
+                        <h3>Dr. Smith</h3>
+                        <p class="user-status">Online</p>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <button class="icon-btn">
+                        <i class="fas fa-phone"></i>
+                    </button>
+                    <button class="icon-btn">
+                        <i class="fas fa-video"></i>
+                    </button>
+                    <button class="icon-btn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chat-messages">
+                <div class="message received">
+                    <p>Hello John, how are you feeling today?</p>
+                    <span class="message-time">10:30 AM</span>
+                </div>
+                <div class="message sent">
+                    <p>Much better, doctor. The medication is helping.</p>
+                    <span class="message-time">10:32 AM</span>
+                </div>
+                <div class="message received">
+                    <p>That's great to hear! Remember to continue with the prescribed dosage.</p>
+                    <span class="message-time">10:33 AM</span>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="input-actions">
+                    <button class="icon-btn" id="emoji-btn">
+                        <i class="far fa-smile"></i>
+                    </button>
+                    <button class="icon-btn" id="attach-btn">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <button class="icon-btn" id="camera-btn">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                    <button class="icon-btn" id="scan-btn">
+                        <i class="fas fa-qrcode"></i>
+                    </button>
+                </div>
+                <input type="text" class="chat-input" placeholder="Type a message..." id="chat-input">
+                <button class="send-btn" id="send-message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="modal" id="search-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Search</h3>
+                <button class="close-modal" id="close-search">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="search-input-group">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search health records, doctors, services..." id="global-search">
+            </div>
+            <div class="search-results" id="search-results"></div>
+        </div>
+    </div>
+
+    <!-- Notifications Modal -->
+    <div class="modal" id="notifications-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Notifications</h3>
+                <button class="close-modal" id="close-notifications">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="notifications-list" id="notifications-list">
+                <div class="notification-item">
+                    <i class="fas fa-heartbeat notification-icon"></i>
+                    <div class="notification-content">
+                        <p>New health data recorded</p>
+                        <span class="notification-time">2 hours ago</span>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <i class="fas fa-calendar-check notification-icon"></i>
+                    <div class="notification-content">
+                        <p>Appointment reminder: Tomorrow, 10 AM</p>
+                        <span class="notification-time">5 hours ago</span>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <i class="fas fa-coins notification-icon"></i>
+                    <div class="notification-content">
+                        <p>You received 25 HTB for data sharing</p>
+                        <span class="notification-time">Yesterday</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/micare.js"></script>
+</body>
+</html>
